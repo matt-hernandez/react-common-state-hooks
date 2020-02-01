@@ -1,0 +1,33 @@
+{
+  "name": "react-common-state-hooks",
+  "version": "1.0.0",
+  "description": "A set of wrappers around React's useState hook for many common scenarios",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matt-hernandez/react-common-state-hooks.git"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "state",
+    "common",
+    "useState"
+  ],
+  "author": "Matt Hernandez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/matt-hernandez/react-common-state-hooks/issues"
+  },
+  "homepage": "https://github.com/matt-hernandez/react-common-state-hooks#readme",
+  "dependencies": {
+    "@types/react": "^16.9.0",
+    "react": "^16.9.0"
+  },
+  "devDependencies": {
+    "typescript": "3.5.3"
+  }
+}
