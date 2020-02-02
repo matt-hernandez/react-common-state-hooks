@@ -2,7 +2,7 @@
 
 A set of wrappers around React's useState hook for many common scenarios.
 Written with TypeScript and equipped with typings, but available for use
-in any JS project.
+in any React project.
 
 ## useToggle
 
