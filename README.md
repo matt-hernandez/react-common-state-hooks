@@ -84,8 +84,9 @@ const [ currentValue, ...changeStateListeners ] = useValues(initial, values);
 
 return (
   <div>
-    {options.map((option, i) => (
-      <button onClick={changeStateListeners[i]}>Change to {option}</button>
+    User is currently a {currentValue}
+    {values.map((value, i) => (
+      <button onClick={changeStateListeners[i]}>Change to {value}</button>
     ))}
   </div>
 );
