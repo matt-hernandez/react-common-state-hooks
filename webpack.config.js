@@ -13,6 +13,7 @@ module.exports = {
     library: 'ReactCommonStateHooks',
     umdNamedDefine: true
   },
+  externals: ["react"],
   devtool: 'source-map',
   optimization: {
     minimize: true
