@@ -74,20 +74,18 @@ This becomes very useful when you have an array of elements mapped
 into individual components.
 
 ```jsx
-const options = [
-  'Zero',
-  'One',
-  'Two',
-  'Three'
+const values = [
+  'User',
+  'Admin',
+  'Superadmin'
 ]
-const initial = 0;
-const values = options.map((_, i) => i);
+const initial = values[0];
 const [ currentValue, ...changeStateListeners ] = useValues(initial, values);
 
 return (
   <div>
     {options.map((option, i) => (
-      <button onClick={changeStateListeners[i]}>{option}</button>
+      <button onClick={changeStateListeners[i]}>Change to {option}</button>
     ))}
   </div>
 );
