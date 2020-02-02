@@ -7,8 +7,9 @@
   "scripts": {
     "test": "jest --coverage",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "prebuild": "npm test",
     "build": "webpack",
-    "prepare": "npm run test && npm run build"
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
