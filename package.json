@@ -1,6 +1,6 @@
 {
   "name": "react-common-state-hooks",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A set of wrappers around React's useState hook for many common scenarios",
   "main": "index.js",
   "types": "./index.d.ts",
