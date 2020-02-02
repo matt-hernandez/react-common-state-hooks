@@ -6,7 +6,8 @@
   "types": "./index.d.ts",
   "scripts": {
     "test": "npm test",
-    "build": "webpack"
+    "build": "webpack",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
