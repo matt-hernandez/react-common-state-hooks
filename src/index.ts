@@ -80,7 +80,7 @@ export function useResolver<T>(initial: T, resolver: Resolver<T>): ResolverRetur
   ];
 }
 
-export function usePromiseResolver<T>(initial: T, resolver: (...args: any[]) => Promise<T>): PromiseReturn<T> {
+export function useAsyncResolver<T>(initial: T, resolver: (...args: any[]) => Promise<T>): PromiseReturn<T> {
   const [ value, setter ] = useState(initial);
   return [
     value,

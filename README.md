@@ -91,3 +91,108 @@ return (
   </div>
 );
 ```
+
+### useRange
+
+For when you have a range of numerical integer values and want functions
+to change state for each one. The first argument is the `min` value
+and the last value is the `max`. The range is exclusive for the `max` value
+
+```javascript
+const [ currentValue, setToOne, setToTwo, setToThree, setToFour ] = useRange(1, [1, 5]);
+console.log(currentValue); // 1
+setToThree();
+console.log(currentValue); // 3
+setToTwo();
+console.log(currentValue); // 2
+setToFour();
+console.log(currentValue); // 4
+
+// You can always use the spread operator to reduce the number of variables.
+const [ currentValue, ...changeStateListeners ] = useRange(1, [1, 5]);
+```
+
+### useResolver
+
+For when you want a function to be called and have its return value be used
+to set the state.
+
+```javascript
+const [ currentValue, resolver ] = useResolver(null, () => {
+  const value = runComplicatedOperation();
+  const transformedValue = runAnotherOperation(value);
+  return transformedValue; // this will be the new current value
+});
+resolver();
+```
+
+The second item in the returned array also accepts arguments and will pass
+those arguments to your resolver.
+
+```javascript
+const [ currentValue, resolver ] = useResolver(null, (...args) => {
+  console.log(args); // ['a', 'b']
+  const value = runComplicatedOperation();
+  const transformedValue = runAnotherOperation(value);
+  return transformedValue; // this will be the new current value
+});
+resolver('a', 'b');
+```
+
+This hook may seem a little redundant since all it really does is
+reduce a single function call. But it can help clean up organization
+of logic when dealing with imported utility functions that you would
+like to separate from your React logic.
+
+```jsx
+import React from 'react';
+import { useResolver } from 'react-common-state-hooks';
+import { utilityFn, runHeavyCalculations, doMoreLogic } from './utilities';
+
+function Comp() {
+  const [ currentValue, resolver ] = useResolver(null, utilityFn);
+  return (
+    <select onChange={(event) => {
+      const selectValue = event.target.value;
+      const calculated = runHeavyCalculations();
+      const contextSpecific = doMoreLogic(calculated, selectValue);
+      resolver(contextSpecific);
+    }}>
+      <option value="DAY">Day</option>
+      <option value="WEEK">Week</option>
+      <option value="YEAR">Year</option>
+    </select>
+  );
+}
+```
+
+### useAsyncResolver
+
+For when you have an asynchronous operation and want the return value
+of a promise to be used to change your state.
+
+The function passed in as the second argument MUST return a Promise.
+When the promise resolves successfully, the unwrapped value of the promise
+will be used to change the state and trigger a re-render.
+
+```javascript
+const [ currentValue, resolver ] = useAsycnResolver(null, () => {
+  return fetch('http://example.com/movies.json')
+    .then(response => response.json()); // when this resolves, it will be the new value of the state
+});
+resolver();
+
+// This is also valid
+const [ currentValue, resolver ] = useAsycnResolver(null, async () => {
+  const movies = await fetch('http://example.com/movies.json')
+    .then(response => response.json());
+  return movies;
+});
+resolver();
+```
+
+This function does not change the state or trigger a re-render if the
+returned Promise fails. For the time being, this library will not try
+to implement an API for that scenario. Given how every React app is
+different, async failure is a situation that is best left up to you to
+figure out.
