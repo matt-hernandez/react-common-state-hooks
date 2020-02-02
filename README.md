@@ -96,7 +96,7 @@ return (
 
 For when you have a range of numerical integer values and want functions
 to change state for each one. The first argument is the `min` value
-and the last value is the `max`. The range is exclusive for the `max` value
+and the last value is the `max`. The range is exclusive for the `max` value.
 
 ```javascript
 const [ currentValue, setToOne, setToTwo, setToThree, setToFour ] = useRange(1, [1, 5]);
@@ -171,7 +171,7 @@ function Comp() {
 For when you have an asynchronous operation and want the return value
 of a promise to be used to change your state.
 
-The function passed in as the second argument MUST return a Promise.
+The function passed in as the second hook argument MUST return a Promise.
 When the promise resolves successfully, the unwrapped value of the promise
 will be used to change the state and trigger a re-render.
 
@@ -189,6 +189,19 @@ const [ currentValue, resolver ] = useAsycnResolver(null, async () => {
   return movies;
 });
 resolver();
+```
+
+Just as with `useResolver`, arguments given to the second item in the
+returned array pass through to the resolver.
+
+```javascript
+const [ currentValue, resolver ] = useAsycnResolver(null, async (...args) => {
+  console.log(args); // ['a', 'b']
+  const movies = await fetch('http://example.com/movies.json')
+    .then(response => response.json());
+  return movies;
+});
+resolver('a', 'b');
 ```
 
 This function does not change the state or trigger a re-render if the
