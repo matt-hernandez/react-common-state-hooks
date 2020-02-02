@@ -95,7 +95,8 @@ return (
 ## useRange
 
 For when you have a range of numerical integer values and want functions
-to change state for each one. The first argument is the `min` value
+to change state for each one. The range is specified as a two-item array
+after the initial specified value. The first item is the `min` value
 and the last value is the `max`. The range is exclusive for the `max` value.
 
 ```javascript
