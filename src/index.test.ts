@@ -216,3 +216,60 @@ describe('useResolver', () => {
     expect(outer).toHaveBeenCalledWith(...argsToTest);
   });
 });
+
+describe('useAsyncResolver', () => {
+  test('should call inner resolving function when the resolver is called', () => {
+    const initial = false;
+    let current = initial;
+    let promise;
+    const obj = {
+      async inner() {
+        return current = !current;
+      }
+    }
+    function outer() {
+      promise = obj.inner();
+      return promise;
+    }
+    const { result } = renderHook(() => useAsyncResolver(initial, outer));
+    function testResolver(startValue: boolean, endValue: boolean) {
+      let [ value, resolver ] = result.current;
+      expect(value).toBe(startValue);
+      act(() => {
+        resolver();
+      });
+      return promise.then(() => {
+        [ value ] = result.current;
+        expect(value).toBe(endValue);
+      })
+    }
+    return testResolver(initial, !initial);
+  });
+
+  test('should pass arguments from resolver to resolving function', () => {
+    const initial = false;
+    let current = initial;
+    let promise;
+    const inner = jest.fn((...args: any[]) => {
+      return current = !current;
+    });
+    const outer = (...args: any[]) => {
+      const callToInner = async() => inner(...args);
+      promise = callToInner();
+      return promise;
+    };
+    const { result } = renderHook(() => useAsyncResolver(initial, outer));
+    function testResolver(...args: any[]) {
+      let [ , resolver ] = result.current;
+      act(() => {
+        resolver(...args);
+      });
+      return promise;
+    }
+    const argsToTest = ['a', 'b']
+    return testResolver(...argsToTest).then(() => {
+      expect(inner).toHaveBeenCalledWith(...argsToTest);
+    });
+  });
+});
+
