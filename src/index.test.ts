@@ -136,7 +136,6 @@ describe('useValues', () => {
 });
 
 describe('useRange', () => {
-
   test('should return an array of state changers in a range from `min` and `max`', () => {
     const min = 0;
     const max = 5;
@@ -166,5 +165,54 @@ describe('useRange', () => {
     testRange(0, 4);
     testRange(4, 1);
     testRange(1, 1);
+  });
+});
+
+describe('useResolver', () => {
+  test('should call inner resolving function when the resolver is called', () => {
+    const initial = false;
+    let current = initial;
+    const obj = {
+      inner() {
+        return !current;
+      }
+    }
+    function outer() {
+      return current = obj.inner();
+    }
+    const { result } = renderHook(() => useResolver(initial, outer));
+    function testResolver(startValue: boolean, endValue: boolean) {
+      let [ value, resolver ] = result.current;
+      expect(value).toBe(startValue);
+      act(() => {
+        resolver();
+      });
+      [ value ] = result.current;
+      expect(value).toBe(endValue);
+    }
+    const spy = jest.spyOn(obj, 'inner');
+    testResolver(initial, !initial);
+    testResolver(current, !current);
+    testResolver(current, !current);
+    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledTimes(3);
+  });
+
+  test('should pass arguments from resolver to resolving function', () => {
+    const initial = false;
+    let current = initial;
+    const outer = jest.fn((...args: any[]) => {
+      return current = !current;
+    });
+    const { result } = renderHook(() => useResolver(initial, outer));
+    function testResolver(...args: any[]) {
+      let [ , resolver ] = result.current;
+      act(() => {
+        resolver(...args);
+      });
+    }
+    const argsToTest = ['a', 'b']
+    testResolver(...argsToTest);
+    expect(outer).toHaveBeenCalledWith(...argsToTest);
   });
 });
