@@ -1,9 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: {
-    'react-common-state-hooks': './src/index.ts'
-  },
+  entry: './src/index.ts',
   mode: 'production',
   output: {
     path: path.resolve(__dirname),

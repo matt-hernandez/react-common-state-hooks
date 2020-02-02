@@ -8,7 +8,6 @@ import {
   useResolver,
   useAsyncResolver
 } from './index';
-import { range } from './range';
 
 describe('useToggle', () => {
   test('should toggle between `true` and `false` and change explicitly', () => {
@@ -137,22 +136,15 @@ describe('useValues', () => {
 });
 
 describe('useRange', () => {
-  test('should have a working reliance on the `range` function', () => {
-    const min = 0;
-    const max = 5;
-    const values = range([min, max]);
-    expect(values.length).toBe(max);
-    expect(values[0]).toBe(min);
-    expect(values[1]).toBe(1);
-    expect(values[4]).toBe(max - 1);
-    expect(values[max]).toBeFalsy();
-  });
 
   test('should return an array of state changers in a range from `min` and `max`', () => {
     const min = 0;
     const max = 5;
     const minAndMax = [min, max];
-    const values = range(minAndMax);
+    const values = [];
+    for (let i = min; i < max; i++) {
+      values.push(i);
+    }
     const initial = min;
     const { result } = renderHook(() => useRange(initial, minAndMax));
     function testRange(startValueIndex: number, i: number) {

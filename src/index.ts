@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { range } from './range';
 
 export type NoArgReturnVoid = () => void;
 export type AcceptAllReturnVoid = (...args: any[]) => void;
@@ -55,9 +54,12 @@ export function useValues<T>(initial: T, values: T[]): [ T, ...Array<NoArgReturn
   ];
 }
 
-export function useRange(initial: number, minAndMax: number[]): RangeReturn {
+export function useRange(initial: number, [min, max]: number[]): RangeReturn {
   const [ value, setter ] = useState(initial);
-  const numbers = range(minAndMax);
+  const numbers = [];
+  for (let i = min; i < max; i++) {
+    numbers.push(i);
+  }
   return [
     value,
     ...numbers.map(value => () => setter(value))
