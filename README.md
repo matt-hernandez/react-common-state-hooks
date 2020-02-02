@@ -1,5 +1,7 @@
 # React Common State Hooks
 
+[![Coverage Status](https://coveralls.io/repos/github/matt-hernandez/react-common-state-hooks/badge.svg?branch=master)](https://coveralls.io/github/matt-hernandez/react-common-state-hooks?branch=master)
+
 A set of wrappers around React's useState hook for many common scenarios.
 Written with TypeScript and equipped with typings, but available for use
 in any React project.
