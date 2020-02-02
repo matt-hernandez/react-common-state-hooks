@@ -4,7 +4,7 @@ A set of wrappers around React's useState hook for many common scenarios.
 Written with TypeScript and equipped with typings, but available for use
 in any JS project.
 
-## useToggle
+### useToggle
 
 For when you need to switch things back and forth from `true` to `false`.
 The first array item is the current value, the second is a toggle function
@@ -14,7 +14,6 @@ sets the value to `false`.
 
 ```javascript
 const [ currentValue, toggle, setToTrue, setToFalse ] = useToggle(true);
-
 // the same order of return values applies regardless of whether initially `true` or `false`
 const [ currentValue, toggle, setToTrue, setToFalse ] = useToggle(false);
 ```
