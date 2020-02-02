@@ -10,12 +10,13 @@ function range([min, max]: [number, number]) {
 
 export type NoArgReturnVoid = () => void;
 export type AnySetter<T> = (value: T) => void;
+export type AcceptAllReturnVoid = (...args: any[]) => void;
 export type Resolver<T> = (...args: any[]) => T
 export type ToggleReturn = [boolean, NoArgReturnVoid, NoArgReturnVoid, NoArgReturnVoid];
 export type ToggleValuesReturn<T> = [T, NoArgReturnVoid, NoArgReturnVoid, NoArgReturnVoid];
 export type RangeReturn = [number, ...Array<(value: number) => void> ];
-export type ResolverReturn<T> = [T, AnySetter<T>];
-export type PromiseReturn<T> = [T, (...args: any[]) => void];
+export type ResolverReturn<T> = [T, AcceptAllReturnVoid];
+export type PromiseReturn<T> = [T, AcceptAllReturnVoid];
 
 export function useToggle(initial: boolean): ToggleReturn {
   const [ value, setter ] = useState(initial);
@@ -75,7 +76,7 @@ export function useResolver<T>(initial: T, resolver: Resolver<T>): ResolverRetur
   const [ value, setter ] = useState(initial);
   return [
     value,
-    () => setter(resolver())
+    (...args: any[]) => setter(resolver(...args))
   ];
 }
 
