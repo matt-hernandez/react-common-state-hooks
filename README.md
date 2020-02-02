@@ -4,7 +4,7 @@ A set of wrappers around React's useState hook for many common scenarios.
 Written with TypeScript and equipped with typings, but available for use
 in any JS project.
 
-### useToggle
+## useToggle
 
 For when you need to switch things back and forth from `true` to `false`.
 The first item in the return array is the current value, the second is a
@@ -18,7 +18,7 @@ const [ currentValue, toggle, setToTrue, setToFalse ] = useToggle(true);
 const [ currentValue, toggle, setToTrue, setToFalse ] = useToggle(false);
 ```
 
-### useToggleOnce
+## useToggleOnce
 
 For when you need to flip the switch once, and never flip the value again
 for as long as the component is mounted. The first item in the return array
@@ -34,7 +34,7 @@ toggleOnce();
 console.log(currentValue); // false, now and FOREVER! (until component is unmounted)
 ```
 
-### useToggleValues
+## useToggleValues
 
 For when you need to flip between back and forth between two values that
 are not booleans. The first item in the return array is the current value,
@@ -54,7 +54,7 @@ setToB();
 console.log(currentValue); // 'b'
 ```
 
-### useValues
+## useValues
 
 For when you have an array of defined values and want functions that
 corresponding to changing the state for each one.
@@ -80,19 +80,19 @@ const values = [
   'Superadmin'
 ]
 const initial = values[0];
-const [ currentValue, ...changeStateListeners ] = useValues(initial, values);
+const [ currentValue, ...listeners ] = useValues(initial, values);
 
 return (
   <div>
     User is currently a {currentValue}
     {values.map((value, i) => (
-      <button onClick={changeStateListeners[i]}>Change to {value}</button>
+      <button onClick={listeners[i]}>Change to {value}</button>
     ))}
   </div>
 );
 ```
 
-### useRange
+## useRange
 
 For when you have a range of numerical integer values and want functions
 to change state for each one. The first argument is the `min` value
@@ -109,10 +109,10 @@ setToFour();
 console.log(currentValue); // 4
 
 // You can always use the spread operator to reduce the number of variables.
-const [ currentValue, ...changeStateListeners ] = useRange(1, [1, 5]);
+const [ currentValue, ...listeners ] = useRange(1, [1, 5]);
 ```
 
-### useResolver
+## useResolver
 
 For when you want a function to be called and have its return value be used
 to set the state.
@@ -166,7 +166,7 @@ function Comp() {
 }
 ```
 
-### useAsyncResolver
+## useAsyncResolver
 
 For when you have an asynchronous operation and want the return value
 of a promise to be used to change your state.
