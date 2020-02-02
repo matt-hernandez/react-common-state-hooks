@@ -75,3 +75,63 @@ describe('useToggleOnce', () => {
     testToggleOnce(true, true);
   });
 });
+
+
+describe('useToggleValues', () => {
+  test('should toggle between two arbitrary values and change explicitly', () => {
+    const values = ['a', 'b'];
+    const initial = values[0];
+    const { result } = renderHook(() => useToggleValues(initial, values));
+    expect(result.current[0]).toBe(initial);
+    function testToggleValues<T>(whichFunc: 'toggle' | 'setToFirst' | 'setToSecond', startValue: T, endValue: T) {
+      let [ value, toggle, setToFirst, setToSecond ] = result.current;
+      expect(value).toBe(startValue);
+      act(() => {
+        if (whichFunc === 'toggle') {
+          toggle();
+        } else if (whichFunc === 'setToFirst') {
+          setToFirst();
+        } else if (whichFunc === 'setToSecond') {
+          setToSecond();
+        }
+      });
+      [ value ] = result.current;
+      expect(value).toBe(endValue);
+    }
+    testToggleValues('toggle', values[0], values[1]);
+    testToggleValues('toggle', values[1], values[0]);
+    testToggleValues('setToSecond', values[0], values[1]);
+    testToggleValues('setToSecond', values[1], values[1]);
+    testToggleValues('setToFirst', values[1], values[0]);
+    testToggleValues('setToFirst', values[0], values[0]);
+  });
+});
+
+describe('useValues', () => {
+  test('should change state value corresponding to listener in array', () => {
+    const values = ['a', 'b', 'c'];
+    const initial = values[0];
+    const { result } = renderHook(() => useValues(initial, values));
+    expect(result.current[0]).toBe(initial);
+    function testToggleValues(startValueIndex: number, i: number) {
+      let [ value, ...listeners ] = result.current;
+      expect(value).toBe(values[startValueIndex]);
+      act(() => {
+        listeners[i]();
+      });
+      [ value ] = result.current;
+      expect(value).toBe(values[i]);
+    }
+    testToggleValues(0, 1);
+    testToggleValues(1, 2);
+    testToggleValues(2, 0);
+    testToggleValues(0, 2);
+    testToggleValues(2, 1);
+    testToggleValues(1, 0);
+    testToggleValues(0, 0);
+    testToggleValues(0, 1);
+    testToggleValues(1, 1);
+    testToggleValues(1, 2);
+    testToggleValues(2, 2);
+  });
+});
