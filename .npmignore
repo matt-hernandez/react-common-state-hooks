@@ -23,4 +23,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Project resources
 /src
+.gitignore
+tsconfig.json
+wepback.config.json
