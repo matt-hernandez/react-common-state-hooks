@@ -1,19 +1,12 @@
 import { useState, useCallback } from 'react';
-
-function range([min, max]: [number, number]) {
-  const array = [];
-  for (let i = min; i < max; i++) {
-    array.push(i);
-  }
-  return array;
-}
+import { range } from './range';
 
 export type NoArgReturnVoid = () => void;
 export type AcceptAllReturnVoid = (...args: any[]) => void;
 export type Resolver<T> = (...args: any[]) => T
 export type ToggleReturn = [boolean, NoArgReturnVoid, NoArgReturnVoid, NoArgReturnVoid];
 export type ToggleValuesReturn<T> = [T, NoArgReturnVoid, NoArgReturnVoid, NoArgReturnVoid];
-export type RangeReturn = [number, ...Array<(value: number) => void> ];
+export type RangeReturn = [number, ...Array<NoArgReturnVoid> ];
 export type ResolverReturn<T> = [T, AcceptAllReturnVoid];
 export type PromiseReturn<T> = [T, AcceptAllReturnVoid];
 
@@ -62,7 +55,7 @@ export function useValues<T>(initial: T, values: T[]): [ T, ...Array<NoArgReturn
   ];
 }
 
-export function useRange(initial: number, minAndMax: [number, number]): RangeReturn {
+export function useRange(initial: number, minAndMax: number[]): RangeReturn {
   const [ value, setter ] = useState(initial);
   const numbers = range(minAndMax);
   return [

@@ -8,6 +8,7 @@ import {
   useResolver,
   useAsyncResolver
 } from './index';
+import { range } from './range';
 
 describe('useToggle', () => {
   test('should toggle between `true` and `false` and change explicitly', () => {
@@ -76,7 +77,6 @@ describe('useToggleOnce', () => {
   });
 });
 
-
 describe('useToggleValues', () => {
   test('should toggle between two arbitrary values and change explicitly', () => {
     const values = ['a', 'b'];
@@ -113,7 +113,7 @@ describe('useValues', () => {
     const initial = values[0];
     const { result } = renderHook(() => useValues(initial, values));
     expect(result.current[0]).toBe(initial);
-    function testToggleValues(startValueIndex: number, i: number) {
+    function testValues(startValueIndex: number, i: number) {
       let [ value, ...listeners ] = result.current;
       expect(value).toBe(values[startValueIndex]);
       act(() => {
@@ -122,16 +122,57 @@ describe('useValues', () => {
       [ value ] = result.current;
       expect(value).toBe(values[i]);
     }
-    testToggleValues(0, 1);
-    testToggleValues(1, 2);
-    testToggleValues(2, 0);
-    testToggleValues(0, 2);
-    testToggleValues(2, 1);
-    testToggleValues(1, 0);
-    testToggleValues(0, 0);
-    testToggleValues(0, 1);
-    testToggleValues(1, 1);
-    testToggleValues(1, 2);
-    testToggleValues(2, 2);
+    testValues(0, 1);
+    testValues(1, 2);
+    testValues(2, 0);
+    testValues(0, 2);
+    testValues(2, 1);
+    testValues(1, 0);
+    testValues(0, 0);
+    testValues(0, 1);
+    testValues(1, 1);
+    testValues(1, 2);
+    testValues(2, 2);
+  });
+});
+
+describe('useRange', () => {
+  test('should have a working reliance on the `range` function', () => {
+    const min = 0;
+    const max = 5;
+    const values = range([min, max]);
+    expect(values.length).toBe(max);
+    expect(values[0]).toBe(min);
+    expect(values[1]).toBe(1);
+    expect(values[4]).toBe(max - 1);
+    expect(values[max]).toBeFalsy();
+  });
+
+  test('should return an array of state changers in a range from `min` and `max`', () => {
+    const min = 0;
+    const max = 5;
+    const minAndMax = [min, max];
+    const values = range(minAndMax);
+    const initial = min;
+    const { result } = renderHook(() => useRange(initial, minAndMax));
+    function testRange(startValueIndex: number, i: number) {
+      let [ value, ...listeners ] = result.current;
+      expect(value).toBe(values[startValueIndex]);
+      act(() => {
+        listeners[i]();
+      });
+      [ value ] = result.current;
+      expect(value).toBe(values[i]);
+    }
+    testRange(0, 1);
+    testRange(1, 2);
+    testRange(2, 3);
+    testRange(3, 4);
+    testRange(4, 4);
+    testRange(4, 2);
+    testRange(2, 0);
+    testRange(0, 4);
+    testRange(4, 1);
+    testRange(1, 1);
   });
 });
