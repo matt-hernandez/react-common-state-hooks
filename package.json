@@ -1,13 +1,13 @@
 {
   "name": "react-common-state-hooks",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A set of wrappers around React's useState hook for many common scenarios",
   "main": "index.js",
   "types": "./index.d.ts",
   "scripts": {
     "test": "npm test",
     "build": "webpack",
-    "prepublish": "npm run build"
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
