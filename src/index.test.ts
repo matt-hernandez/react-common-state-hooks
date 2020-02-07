@@ -7,7 +7,8 @@ import {
   useRange,
   useResolver,
   useAsyncResolver,
-  usePrevious
+  usePrevious,
+  NoArgReturnVoid
 } from './index';
 
 describe('useToggle', () => {
@@ -170,14 +171,13 @@ describe('useRange', () => {
 });
 
 describe('usePrevious', () => {
-  const usePreviousTestHook = (initial: boolean, startWithInitial: boolean = false): [ boolean, boolean, () => void ] => {
-    const [ current, toggle ] = useToggle(initial);
-    const previous = usePrevious(current, startWithInitial);
-    return [ current, previous, toggle ];
-  };
   test('should keep track of previous values as they update, starting with undefined if using default hook', () => {
     const initial = false;
-    const { result } = renderHook(() => usePreviousTestHook(initial));
+    const { result } = renderHook(() => {
+      const [ current, toggle ] = useToggle(initial);
+      const previous = usePrevious(current);
+      return [ current, previous, toggle ] as [ boolean, boolean, NoArgReturnVoid ];
+    });
     function testPrevious(expectedStartCurrent: boolean, expectedEndCurrent: boolean, expectedStartPrevious: boolean) {
       let [ current, previous, toggle ] = result.current;
       expect(current).toBe(expectedStartCurrent);
@@ -195,7 +195,11 @@ describe('usePrevious', () => {
   });
   test('should keep track of previous values as they update, starting with initial value if using `startWithInitial`', () => {
     const initial = false;
-    const { result } = renderHook(() => usePreviousTestHook(initial, true));
+    const { result } = renderHook(() => {
+      const [ current, toggle ] = useToggle(initial);
+      const previous = usePrevious(current, true);
+      return [ current, previous, toggle ] as [ boolean, boolean, NoArgReturnVoid ];
+    });
     function testPrevious(expectedStartCurrent: boolean, expectedEndCurrent: boolean, expectedStartPrevious: boolean) {
       let [ current, previous, toggle ] = result.current;
       expect(current).toBe(expectedStartCurrent);
