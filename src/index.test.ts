@@ -6,7 +6,8 @@ import {
   useValues,
   useRange,
   useResolver,
-  useAsyncResolver
+  useAsyncResolver,
+  usePrevious
 } from './index';
 
 describe('useToggle', () => {
@@ -165,6 +166,50 @@ describe('useRange', () => {
     testRange(0, 4);
     testRange(4, 1);
     testRange(1, 1);
+  });
+});
+
+describe('usePrevious', () => {
+  const usePreviousTestHook = (initial: boolean, startWithInitial: boolean = false): [ boolean, boolean, () => void ] => {
+    const [ current, toggle ] = useToggle(initial);
+    const previous = usePrevious(current, startWithInitial);
+    return [ current, previous, toggle ];
+  };
+  test('should keep track of previous values as they update, starting with undefined if using default hook', () => {
+    const initial = false;
+    const { result } = renderHook(() => usePreviousTestHook(initial));
+    function testPrevious(expectedStartCurrent: boolean, expectedEndCurrent: boolean, expectedStartPrevious: boolean) {
+      let [ current, previous, toggle ] = result.current;
+      expect(current).toBe(expectedStartCurrent);
+      expect(previous).toBe(expectedStartPrevious);
+      act(() => {
+        toggle();
+      });
+      [ current, previous ] = result.current;
+      expect(current).toBe(expectedEndCurrent);
+      expect(previous).toBe(expectedStartCurrent);
+    }
+    testPrevious(false, true, undefined);
+    testPrevious(true, false, false);
+    testPrevious(false, true, true);
+  });
+  test('should keep track of previous values as they update, starting with initial value if using `startWithInitial`', () => {
+    const initial = false;
+    const { result } = renderHook(() => usePreviousTestHook(initial, true));
+    function testPrevious(expectedStartCurrent: boolean, expectedEndCurrent: boolean, expectedStartPrevious: boolean) {
+      let [ current, previous, toggle ] = result.current;
+      expect(current).toBe(expectedStartCurrent);
+      expect(previous).toBe(expectedStartPrevious);
+      act(() => {
+        toggle();
+      });
+      [ current, previous ] = result.current;
+      expect(current).toBe(expectedEndCurrent);
+      expect(previous).toBe(expectedStartCurrent);
+    }
+    testPrevious(false, true, false);
+    testPrevious(true, false, false);
+    testPrevious(false, true, true);
   });
 });
 

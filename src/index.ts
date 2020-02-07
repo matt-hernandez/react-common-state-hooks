@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
 export type NoArgReturnVoid = () => void;
 export type AcceptAllReturnVoid = (...args: any[]) => void;
@@ -64,6 +64,14 @@ export function useRange(initial: number, [min, max]: number[]): RangeReturn {
     value,
     ...numbers.map(value => () => setter(value))
   ];
+}
+
+export function usePrevious<T>(value: T, startWithInitial: boolean = false): T | undefined {
+  const ref = startWithInitial ? useRef<T>(value) : useRef<T>();
+  useEffect(() => {
+    ref.current = value;
+  }, [ value ]);
+  return ref.current;
 }
 
 export function useResolver<T>(initial: T, resolver: Resolver<T>): ResolverReturn<T> {
