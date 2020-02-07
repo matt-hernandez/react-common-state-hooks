@@ -116,6 +116,42 @@ console.log(currentValue); // 4
 const [ currentValue, ...listeners ] = useRange(1, [1, 5]);
 ```
 
+## usePrevious
+
+For when you want to keep track of a previous state value. By default, the
+first previous value is `undefined`. Since the only thing previous to the
+starting initial value is... nothingness. However, you can set the starting
+previous value to be the same as the initial value by passing in `true` for
+the second hook argument. The caveat here is that the previous value will be
+the same value twice in a row in the beginning.
+
+Shout-out to [Gabe Ragland](https://usehooks.com/) for this one.
+
+```javascript
+const [ current, toggle ] = useToggle(false);
+const previous = usePrevious(current);
+console.log(current); // false
+console.log(previous); // undefined
+toggle();
+console.log(current); // true
+console.log(previous); // false
+toggle();
+console.log(current); // false
+console.log(previous); // true
+
+// Setting the first previous value to be the same as the initial
+const [ current, toggle ] = useToggle(false);
+const previous = usePrevious(current, true);
+console.log(current); // false
+console.log(previous); // false
+toggle();
+console.log(current); // true
+console.log(previous); // false (same as the one above)
+toggle();
+console.log(current); // false
+console.log(previous); // true
+```
+
 ## useResolver
 
 For when you want a function to be called and have its return value be used
