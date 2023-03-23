@@ -67,7 +67,7 @@ export function useRange(initial: number, [min, max]: number[]): RangeReturn {
 }
 
 export function usePrevious<T>(value: T, startWithInitial: boolean = false): T | undefined {
-  const ref = startWithInitial ? useRef<T>(value) : useRef<T>();
+  const ref = useRef<T>(startWithInitial ? value : undefined);
   useEffect(() => {
     ref.current = value;
   }, [ value ]);
