@@ -4,7 +4,8 @@
     "lib": [ "es2015" ],
     "outDir": ".",
     "sourceMap": true,
-    "declaration": true
+    "declaration": true,
+    "strict": true,
   },
   "files": [
     "./src/index.ts"

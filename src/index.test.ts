@@ -142,7 +142,7 @@ describe('useRange', () => {
     const min = 0;
     const max = 5;
     const minAndMax = [min, max];
-    const values = [];
+    const values: number[] = [];
     for (let i = min; i < max; i++) {
       values.push(i);
     }
@@ -178,7 +178,7 @@ describe('usePrevious', () => {
       const previous = usePrevious(current);
       return [ current, previous, toggle ] as [ boolean, boolean, NoArgReturnVoid ];
     });
-    function testPrevious(expectedStartCurrent: boolean, expectedEndCurrent: boolean, expectedStartPrevious: boolean) {
+    function testPrevious(expectedStartCurrent: boolean, expectedEndCurrent: boolean, expectedStartPrevious: boolean | undefined) {
       let [ current, previous, toggle ] = result.current;
       expect(current).toBe(expectedStartCurrent);
       expect(previous).toBe(expectedStartPrevious);
@@ -270,7 +270,7 @@ describe('useAsyncResolver', () => {
   test('should call inner resolving function when the resolver is called', async () => {
     const initial = false;
     let current = initial;
-    let promise;
+    let promise: Promise<boolean>;
     const obj = {
       async inner() {
         return current = !current;
@@ -297,7 +297,7 @@ describe('useAsyncResolver', () => {
   test('should pass arguments from resolver to resolving function', async () => {
     const initial = false;
     let current = initial;
-    let promise;
+    let promise: Promise<boolean>;
     const inner = jest.fn((...args: any[]) => {
       return current = !current;
     });
