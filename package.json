@@ -1,6 +1,6 @@
 {
   "name": "react-common-state-hooks",
-  "version": "1.1.13",
+  "version": "1.1.14",
   "description": "A set of wrappers around React's useState hook for many common scenarios",
   "main": "index.js",
   "types": "./index.d.ts",
@@ -39,10 +39,10 @@
   },
   "homepage": "https://github.com/matt-hernandez/react-common-state-hooks#readme",
   "dependencies": {
-    "@types/react": "^17.0.39"
+    "@types/react": ">=17.0.39"
   },
   "peerDependencies": {
-    "react": "^17.0.2"
+    "react": ">=17.0.2"
   },
   "devDependencies": {
     "@testing-library/react-hooks": "^7.0.2",
