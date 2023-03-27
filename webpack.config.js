@@ -10,10 +10,13 @@ module.exports = {
     library: 'ReactCommonStateHooks',
     umdNamedDefine: true
   },
-  externals: ["react"],
-  resolve: {
-    alias: {
-      react: path.resolve('./node_modules/react')
+  externals: {
+    // Use external version of React
+    "react": {
+      "commonjs": "react",
+      "commonjs2": "react",
+      "amd": "react",
+      "root": "React"
     }
   },
   devtool: 'source-map',
