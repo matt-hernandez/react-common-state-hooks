@@ -11,6 +11,11 @@ module.exports = {
     umdNamedDefine: true
   },
   externals: ["react"],
+  resolve: {
+    alias: {
+      react: path.resolve('./node_modules/react')
+    }
+  },
   devtool: 'source-map',
   optimization: {
     minimize: true
